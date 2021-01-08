@@ -69,6 +69,15 @@ public abstract class CampfireBlockMixin extends Block {
                     cir.setReturnValue(ActionResult.SUCCESS);
                 }
             }
+
+            if( !world.isClient ) {
+                ItemStack ignited = Utils.igniteItemStack( itemStack );
+                if( !ignited.isEmpty() ) {
+                    player.setStackInHand( hand, ignited );
+                    Utils.playItemIgniteSound( pos, world );
+                }
+            }
+
         }else{
             if( player.getStackInHand(hand).getItem() == Items.FLINT_AND_STEEL ) {
                 schedule(world, pos);
@@ -101,6 +110,7 @@ public abstract class CampfireBlockMixin extends Block {
             int s = state.get(SIZE);
             if( s == 0 ) {
                 world.setBlockState( pos, state.with(CampfireBlock.LIT, false) );
+                Utils.playExtinguishSound( pos, world );
             }else{
                 world.setBlockState( pos, state.with(SIZE, s - 1) );
                 schedule(world, pos);

@@ -1,6 +1,7 @@
 package net.darktree.fading.mixin;
 
 import net.darktree.fading.Fading;
+import net.darktree.fading.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -37,6 +38,7 @@ public abstract class LanternBlockMixin extends Block {
     @Override
     public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
         world.setBlockState( pos, getUnlitState( state.getBlock() ).with( Properties.HANGING, state.get(Properties.HANGING) ) );
+        Utils.playExtinguishSound( pos, world );
     }
 
     private void schedule( World world, BlockPos pos ) {

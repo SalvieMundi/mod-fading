@@ -1,6 +1,7 @@
 package net.darktree.fading.mixin;
 
 import net.darktree.fading.Fading;
+import net.darktree.fading.util.Utils;
 import net.minecraft.block.*;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.server.world.ServerWorld;
@@ -19,6 +20,8 @@ public abstract class WallTorchBlockMixin extends TorchBlock {
     @Override
     public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
         world.setBlockState( pos, getWallUnlitState( state.getBlock() ).with(HorizontalFacingBlock.FACING, state.get(HorizontalFacingBlock.FACING)) );
+        Utils.playExtinguishSound( pos, world );
+        Utils.playWallTorchSmokeEffect( pos, world );
     }
 
     public BlockState getWallUnlitState( Block block ) {
