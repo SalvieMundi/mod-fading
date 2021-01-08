@@ -1,0 +1,9 @@
+{
+    "variants": {
+        "facing=east":  { "model": "block/extinguished/wall_torch" },
+        "facing=south":  { "model": "block/extinguished/wall_torch", "y": 90 },
+        "facing=west":  { "model": "block/extinguished/wall_torch", "y": 180 },
+        "facing=north":  { "model": "block/extinguished/wall_torch", "y": 270 }
+    }
+}
+

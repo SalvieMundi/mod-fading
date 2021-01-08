@@ -1,0 +1,6 @@
+{
+    "variants": {
+        "hanging=true": { "model": "block/extinguished/hanging_soul_lantern"},
+        "hanging=false": { "model": "block/extinguished/soul_lantern"}
+  }
+}

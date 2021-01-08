@@ -1,0 +1,17 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "net.darktree.fading.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "CampfireBlockMixin",
+    "LanternBlockMixin",
+    "TorchBlockMixin",
+    "WallTorchBlockMixin"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

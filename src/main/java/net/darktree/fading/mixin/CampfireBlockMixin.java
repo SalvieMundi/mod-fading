@@ -1,0 +1,115 @@
+package net.darktree.fading.mixin;
+
+import net.darktree.fading.Fading;
+import net.darktree.fading.util.Utils;
+import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.CampfireBlock;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.Fluids;
+import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.stat.Stats;
+import net.minecraft.state.StateManager;
+import net.minecraft.state.property.IntProperty;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
+import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import java.util.Random;
+
+@Mixin(CampfireBlock.class)
+public abstract class CampfireBlockMixin extends Block {
+
+    public CampfireBlockMixin(Settings settings) {
+        super(settings);
+    }
+
+    @Shadow
+    protected abstract boolean doesBlockCauseSignalFire(BlockState state);
+
+    private static final IntProperty SIZE = IntProperty.of("size", 0, 3);
+
+    @Inject(at=@At("TAIL"), method="<init>(ZILnet/minecraft/block/AbstractBlock$Settings;)V")
+    public void init(boolean emitsParticles, int fireDamage, AbstractBlock.Settings settings, CallbackInfo ci) {
+        setDefaultState( getDefaultState().with(SIZE, 0).with(CampfireBlock.LIT, false) );
+    }
+
+    @Inject(at=@At("HEAD"), method= "appendProperties(Lnet/minecraft/state/StateManager$Builder;)V")
+    public void appendProperties(StateManager.Builder<Block, BlockState> builder, CallbackInfo ci) {
+        builder.add(SIZE);
+    }
+
+    @Inject(at=@At("HEAD"), method="onUse(Lnet/minecraft/block/BlockState;Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/util/Hand;Lnet/minecraft/util/hit/BlockHitResult;)Lnet/minecraft/util/ActionResult;", cancellable = true)
+    public void onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit, CallbackInfoReturnable<ActionResult> cir) {
+        if ( state.get(CampfireBlock.LIT) ) {
+            ItemStack itemStack = player.getStackInHand(hand);
+
+            if( !world.isClient && Utils.isFuel( itemStack ) ) {
+                int s = state.get(SIZE);
+                if (s != 3) {
+                    world.setBlockState(pos, state.with(SIZE, s + 1));
+
+                    if (!player.abilities.creativeMode) {
+                        itemStack.decrement(1);
+                    }
+
+                    player.incrementStat(Stats.INTERACT_WITH_CAMPFIRE);
+                    cir.setReturnValue(ActionResult.SUCCESS);
+                }
+            }
+        }else{
+            if( player.getStackInHand(hand).getItem() == Items.FLINT_AND_STEEL ) {
+                schedule(world, pos);
+            }
+        }
+    }
+
+    @Inject(at=@At("HEAD"), method="spawnSmokeParticle(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;ZZ)V", cancellable = true)
+    private static void spawnSmokeParticle(World world, BlockPos pos, boolean isSignal, boolean lotsOfSmoke, CallbackInfo ci) {
+        if( world.random.nextInt(1 + (int) Math.pow( 2, world.getBlockState(pos).get(SIZE) ) ) == 0 ) {
+            ci.cancel();
+        }
+    }
+
+    @Inject(at=@At("HEAD"), method="getPlacementState(Lnet/minecraft/item/ItemPlacementContext;)Lnet/minecraft/block/BlockState;", cancellable = true)
+    public void getPlacementState(ItemPlacementContext ctx, CallbackInfoReturnable<BlockState> cir) {
+        if( ctx.getWorld().getFluidState(ctx.getBlockPos()).getFluid() != Fluids.WATER ) {
+            cir.setReturnValue( getDefaultState().with( CampfireBlock.FACING, ctx.getPlayerFacing() ).with( CampfireBlock.SIGNAL_FIRE, doesBlockCauseSignalFire(ctx.getWorld().getBlockState( ctx.getBlockPos().down() ))) );
+        }
+    }
+
+    @Override
+    public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
+        schedule(world, pos);
+    }
+
+    @Override
+    public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+        if( state.get(CampfireBlock.LIT) ) {
+            int s = state.get(SIZE);
+            if( s == 0 ) {
+                world.setBlockState( pos, state.with(CampfireBlock.LIT, false) );
+            }else{
+                world.setBlockState( pos, state.with(SIZE, s - 1) );
+                schedule(world, pos);
+            }
+        }
+    }
+
+    private void schedule( World world, BlockPos pos ) {
+        world.getBlockTickScheduler().schedule(pos, (CampfireBlock) (Object) this, Fading.SETTINGS.campfireTime.getTicks(world.random));
+    }
+
+}
