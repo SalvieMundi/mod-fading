@@ -11,10 +11,7 @@ import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.Material;
 import net.minecraft.client.render.RenderLayer;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.WallStandingBlockItem;
+import net.minecraft.item.*;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
@@ -49,6 +46,11 @@ public class Fading implements ModInitializer, ClientModInitializer {
         Registry.register( Registry.ITEM, new Identifier("extinguished_soul_torch"), EXTINGUISHED_SOUL_TORCH_ITEM);
         Registry.register( Registry.BLOCK, new Identifier("extinguished_soul_lantern"), EXTINGUISHED_SOUL_LANTERN);
         Registry.register( Registry.ITEM, new Identifier("extinguished_soul_lantern"), EXTINGUISHED_SOUL_LANTERN_ITEM);
+
+        // Flints
+        Registry.register( Registry.ITEM, new Identifier("fading", "flint_and_flint"), new FlintAndSteelItem( new Item.Settings().maxDamage( SETTINGS.durability_flint ).group(ItemGroup.TOOLS) ) );
+        Registry.register( Registry.ITEM, new Identifier("fading", "flint_and_gold"), new FlintAndSteelItem( new Item.Settings().maxDamage( SETTINGS.durability_gold ).group(ItemGroup.TOOLS) ) );
+        Registry.register( Registry.ITEM, new Identifier("fading", "flint_and_diamond"), new FlintAndSteelItem( new Item.Settings().maxDamage( SETTINGS.durability_diamond ).group(ItemGroup.TOOLS) ) );
     }
 
     @Override

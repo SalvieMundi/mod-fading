@@ -42,16 +42,12 @@ public class Utils {
         return ItemStack.EMPTY;
     }
 
-    public static int strangeInt( Random random, int max ) {
-        return max > 0 ? random.nextInt( max ) : max;
-    }
-
     public static void playItemIgniteSound( BlockPos pos, World world ) {
         world.playSound( null, pos, SoundEvents.BLOCK_FURNACE_FIRE_CRACKLE, SoundCategory.BLOCKS, 1.0F, 1.0F );
     }
 
     public static void playExtinguishSound( BlockPos pos, World world ) {
-        world.playSound( null, pos, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 0.05F, 2.0F );
+        world.playSound( null, pos, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 0.04F, 2.0F );
     }
 
     @Environment(EnvType.CLIENT)

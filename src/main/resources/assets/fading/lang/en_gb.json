@@ -2,6 +2,9 @@
     "block.minecraft.extinguished_torch": "Unlit Torch",
     "block.minecraft.extinguished_lantern": "Unlit Lantern",
     "block.minecraft.extinguished_soul_torch": "Unlit Soul Torch",
-    "block.minecraft.extinguished_soul_lantern": "Unlit Soul Lantern"
+    "block.minecraft.extinguished_soul_lantern": "Unlit Soul Lantern",
+    "item.fading.flint_and_flint": "Flint and Flint",
+    "item.fading.flint_and_gold": "Flint and Gold",
+    "item.fading.flint_and_diamond": "Flint and Diamond"
 }
 

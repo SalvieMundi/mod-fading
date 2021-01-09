@@ -2,12 +2,12 @@ package net.darktree.fading.util;
 
 import java.util.Random;
 
-public class Minute {
+public class MinuteRange {
 
     private final int min;
     private final int delta;
 
-    public Minute( int min, int max ) {
+    public MinuteRange(int min, int max ) {
         this.min = min * 60 * 20;
         this.delta = (max - min) * 60 * 20;
     }
