@@ -4,36 +4,16 @@ import java.util.Random;
 
 public class Minute {
 
-    private final int minutes;
-    private int randMinutes;
-    private int randSeconds;
-    private int randTicks;
+    private final int min;
+    private final int delta;
 
-    public Minute(int minutes) {
-        this.minutes = minutes;
-    }
-
-    public Minute randMinutes(int minutes ) {
-        randMinutes = minutes;
-        return this;
-    }
-
-    public Minute randSeconds( int seconds ) {
-        randSeconds = seconds;
-        return this;
-    }
-
-    public Minute randTicks( int ticks ) {
-        randTicks = ticks;
-        return this;
-    }
-
-    public int getTicks() {
-        return 20 * 60 * minutes;
+    public Minute( int min, int max ) {
+        this.min = min * 60 * 20;
+        this.delta = (max - min) * 60 * 20;
     }
 
     public int getTicks( Random random ) {
-        return getTicks() + 20 * ( Utils.strangeInt( random, randSeconds ) + 60 * Utils.strangeInt( random, randMinutes ) ) + Utils.strangeInt( random, randTicks );
+        return min + random.nextInt( delta );
     }
 
 }
