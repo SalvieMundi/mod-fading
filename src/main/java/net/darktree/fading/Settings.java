@@ -11,12 +11,12 @@ public class Settings {
         return    "# Configuration file for mod Fading, intended for modpack makers and advanced users!\n"
                 + "# Generated on " + new Date().toString() + "\n"
                 + "\n# Following values are burnout time ranges in minutes:\n"
-                + "#time.campfire.min=5\n"
-                + "#time.campfire.max=21\n"
-                + "#time.torch.min=3\n"
+                + "#time.campfire.min=6\n"
+                + "#time.campfire.max=22\n"
+                + "#time.torch.min=4\n"
                 + "#time.torch.max=13\n"
-                + "#time.lantern.min=6\n"
-                + "#time.lantern.max=17\n"
+                + "#time.lantern.min=7\n"
+                + "#time.lantern.max=18\n"
                 + "\n# Durability of 'flint and X' items:\n"
                 + "item.durability.flint=48\n"
                 + "item.durability.gold=32\n"
@@ -30,16 +30,16 @@ public class Settings {
     }
 
     public final MinuteRange campfireTime = new MinuteRange(
-            CONFIG.getOrDefault("time.campfire.min", 5),
-            CONFIG.getOrDefault("time.campfire.max", 21));
+            CONFIG.getOrDefault("time.campfire.min", 6),
+            CONFIG.getOrDefault("time.campfire.max", 22));
 
     public final MinuteRange torchTime = new MinuteRange(
-            CONFIG.getOrDefault("time.torch.min", 3),
+            CONFIG.getOrDefault("time.torch.min", 4),
             CONFIG.getOrDefault("time.torch.max", 13));
 
     public final MinuteRange lanternTime = new MinuteRange(
-            CONFIG.getOrDefault("time.lantern.min", 6),
-            CONFIG.getOrDefault("time.lantern.max", 17));
+            CONFIG.getOrDefault("time.lantern.min", 7),
+            CONFIG.getOrDefault("time.lantern.max", 18));
 
     public final int durability_flint =
             CONFIG.getOrDefault("item.durability.flint", 48);

@@ -3,13 +3,13 @@
   "id": "fading",
   "version": "${version}",
   "name": "Fading",
-  "description": "",
+  "description": "Makes some light sources slowly fade away into oblivion.",
   "authors": [
     "magistermaks"
   ],
   "contact": {
-    "website": "darktree.net",
-    "homepage": "darktree.net"
+    "website": "http://darktree.net",
+    "homepage": "http://darktree.net"
   },
   "license": "MIT",
   "icon": "assets/fading/icon.png",
@@ -26,8 +26,8 @@
     "fading.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.10.8",
+    "fabricloader": "*",
     "fabric": "*",
-    "minecraft": "1.16.4"
+    "minecraft": "1.16.x"
   }
 }
