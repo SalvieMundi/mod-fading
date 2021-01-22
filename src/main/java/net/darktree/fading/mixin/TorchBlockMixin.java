@@ -2,10 +2,7 @@ package net.darktree.fading.mixin;
 
 import net.darktree.fading.Fading;
 import net.darktree.fading.util.Utils;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.TorchBlock;
+import net.minecraft.block.*;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -31,14 +28,22 @@ public abstract class TorchBlockMixin extends Block {
 
     @Override
     public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
-        schedule(world, pos);
+        if( Utils.isNotRedstoneTorch(this) && Utils.isVanilla(this) ) {
+            schedule(world, pos);
+        }else{
+            super.onBlockAdded(state, world, pos, oldState, notify);
+        }
     }
 
     @Override
     public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-        world.setBlockState( pos, getUnlitState( state.getBlock() ) );
-        Utils.playExtinguishSound( pos, world );
-        Utils.playTorchSmokeEffect( pos, world );
+        if( Utils.isNotRedstoneTorch(this) && Utils.isVanilla(this) ) {
+            world.setBlockState(pos, getUnlitState(state.getBlock()));
+            Utils.playExtinguishSound(pos, world);
+            Utils.playTorchSmokeEffect(pos, world);
+        }else{
+            super.scheduledTick(state, world, pos, random);
+        }
     }
 
     private void schedule( World world, BlockPos pos ) {

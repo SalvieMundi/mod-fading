@@ -3,8 +3,7 @@ package net.darktree.fading.util;
 import net.darktree.fading.Fading;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.WallTorchBlock;
+import net.minecraft.block.*;
 import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -15,6 +14,7 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
@@ -66,6 +66,14 @@ public class Utils {
         double e = pos.getY() + 0.7D + b;
         double f = pos.getZ() + 0.5D + c;
         world.spawnParticles(ParticleTypes.SMOKE, d, e, f, 2, 0, 0, 0, 0);
+    }
+
+    public static boolean isVanilla( Block block ) {
+        return "minecraft".equals( Registry.BLOCK.getId(block).getNamespace() );
+    }
+
+    public static boolean isNotRedstoneTorch(Block block ) {
+        return !(block instanceof RedstoneTorchBlock);
     }
 
 }

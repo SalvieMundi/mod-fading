@@ -19,9 +19,13 @@ public abstract class WallTorchBlockMixin extends TorchBlock {
 
     @Override
     public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-        world.setBlockState( pos, getWallUnlitState( state.getBlock() ).with(HorizontalFacingBlock.FACING, state.get(HorizontalFacingBlock.FACING)) );
-        Utils.playExtinguishSound( pos, world );
-        Utils.playWallTorchSmokeEffect( pos, world );
+        if( Utils.isNotRedstoneTorch(this) && Utils.isVanilla(this) ) {
+            world.setBlockState( pos, getWallUnlitState( state.getBlock() ).with(HorizontalFacingBlock.FACING, state.get(HorizontalFacingBlock.FACING)) );
+            Utils.playExtinguishSound( pos, world );
+            Utils.playWallTorchSmokeEffect( pos, world );
+        }else{
+            super.scheduledTick(state, world, pos, random);
+        }
     }
 
     public BlockState getWallUnlitState( Block block ) {

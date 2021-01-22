@@ -21,4 +21,9 @@ _Integer values_
 `item.durability.gold`  
 `item.durability.diamond`  
 
+**Other**  
+_Boolean value_  
+If set to `true` makes torches disappear on burnout  
+`other.disintegrate`
+
 _*Campfire time is per-layer (campfires have 3 layers)_

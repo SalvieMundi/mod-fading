@@ -3,7 +3,6 @@ package net.darktree.fading;
 import net.darktree.fading.block.ExtinguishedLanternBlock;
 import net.darktree.fading.block.ExtinguishedTorchBlock;
 import net.darktree.fading.block.ExtinguishedWallTorchBlock;
-import net.darktree.fading.util.Utils;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;

@@ -40,5 +40,7 @@ public class Settings {
     public final int durability_diamond =
             CONFIG.getOrDefault("item.durability.diamond", 512);
 
+    public final boolean disintegrate =
+            CONFIG.getOrDefault("other.disintegrate", false);
 
 }
