@@ -40,9 +40,11 @@ public class ExtinguishedTorchBlock extends TorchBlock {
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         ItemStack itemStack = player.getStackInHand(hand);
         if( itemStack.getItem() instanceof FlintAndSteelItem ) {
+
             itemStack.damage(1, player, (p) -> p.sendToolBreakStatus( hand ));
             world.playSound(null, pos, SoundEvents.ITEM_FLINTANDSTEEL_USE, SoundCategory.BLOCKS, 1.0F, world.random.nextFloat() * 0.4F + 0.8F);
             world.setBlockState( pos, getLitState( state.getBlock() ) );
+
             return ActionResult.SUCCESS;
         }
 

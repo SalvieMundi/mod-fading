@@ -38,7 +38,7 @@ public abstract class TorchBlockMixin extends Block {
     @Override
     public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
         if( Utils.isNotRedstoneTorch(this) && Utils.isVanilla(this) ) {
-            world.setBlockState(pos, getUnlitState(state.getBlock()));
+            world.setBlockState(pos, getUnlitState(this));
             Utils.playExtinguishSound(pos, world);
             Utils.playTorchSmokeEffect(pos, world);
         }else{
@@ -51,8 +51,12 @@ public abstract class TorchBlockMixin extends Block {
     }
 
     public BlockState getUnlitState( Block block ) {
-        if( block == Blocks.TORCH ) return Fading.EXTINGUISHED_TORCH.getDefaultState();
-        return Fading.EXTINGUISHED_SOUL_TORCH.getDefaultState();
+        if( !Fading.SETTINGS.disintegrate ) {
+            if (block == Blocks.TORCH) return Fading.EXTINGUISHED_TORCH.getDefaultState();
+            return Fading.EXTINGUISHED_SOUL_TORCH.getDefaultState();
+        }
+
+        return Blocks.AIR.getDefaultState();
     }
 
 }

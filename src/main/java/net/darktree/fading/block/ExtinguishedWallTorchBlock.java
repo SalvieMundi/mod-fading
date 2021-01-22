@@ -42,8 +42,8 @@ public class ExtinguishedWallTorchBlock extends WallTorchBlock {
 
             itemStack.damage(1, player, (p) -> p.sendToolBreakStatus( hand ));
             world.playSound(null, pos, SoundEvents.ITEM_FLINTANDSTEEL_USE, SoundCategory.BLOCKS, 1.0F, world.random.nextFloat() * 0.4F + 0.8F);
-
             world.setBlockState( pos, getLitState( state.getBlock() ).with(FACING, state.get(FACING)) );
+
             return ActionResult.SUCCESS;
         }
 
