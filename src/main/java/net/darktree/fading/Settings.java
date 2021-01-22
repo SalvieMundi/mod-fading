@@ -20,16 +20,16 @@ public class Settings {
     }
 
     public final MinuteRange campfireTime = new MinuteRange(
-            CONFIG.getOrDefault("time.campfire.min", 6),
-            CONFIG.getOrDefault("time.campfire.max", 22));
+            CONFIG.getOrDefault("time.campfire.min", 8),
+            CONFIG.getOrDefault("time.campfire.max", 28));
 
     public final MinuteRange torchTime = new MinuteRange(
-            CONFIG.getOrDefault("time.torch.min", 4),
-            CONFIG.getOrDefault("time.torch.max", 13));
+            CONFIG.getOrDefault("time.torch.min", 8),
+            CONFIG.getOrDefault("time.torch.max", 15));
 
     public final MinuteRange lanternTime = new MinuteRange(
-            CONFIG.getOrDefault("time.lantern.min", 7),
-            CONFIG.getOrDefault("time.lantern.max", 18));
+            CONFIG.getOrDefault("time.lantern.min", 10),
+            CONFIG.getOrDefault("time.lantern.max", 28));
 
     public final int durability_flint =
             CONFIG.getOrDefault("item.durability.flint", 48);
