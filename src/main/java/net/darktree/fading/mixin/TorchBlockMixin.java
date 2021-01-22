@@ -28,21 +28,17 @@ public abstract class TorchBlockMixin extends Block {
 
     @Override
     public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
-        if( Utils.isNotRedstoneTorch(this) && Utils.isVanilla(this) ) {
+        if( Utils.isVanilla(this) ) {
             schedule(world, pos);
-        }else{
-            super.onBlockAdded(state, world, pos, oldState, notify);
         }
     }
 
     @Override
     public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-        if( Utils.isNotRedstoneTorch(this) && Utils.isVanilla(this) ) {
+        if( Utils.isVanilla(this) ) {
             world.setBlockState(pos, getUnlitState(this));
             Utils.playExtinguishSound(pos, world);
             Utils.playTorchSmokeEffect(pos, world);
-        }else{
-            super.scheduledTick(state, world, pos, random);
         }
     }
 

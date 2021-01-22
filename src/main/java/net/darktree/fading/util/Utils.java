@@ -72,8 +72,4 @@ public class Utils {
         return "minecraft".equals( Registry.BLOCK.getId(block).getNamespace() );
     }
 
-    public static boolean isNotRedstoneTorch(Block block ) {
-        return !(block instanceof RedstoneTorchBlock);
-    }
-
 }
