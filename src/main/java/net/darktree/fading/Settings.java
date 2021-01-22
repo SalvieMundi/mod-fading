@@ -10,17 +10,7 @@ public class Settings {
     private String provider( String name ) {
         return    "# Configuration file for mod Fading, intended for modpack makers and advanced users!\n"
                 + "# Generated on " + new Date().toString() + "\n"
-                + "\n# Following values are burnout time ranges in minutes:\n"
-                + "#time.campfire.min=6\n"
-                + "#time.campfire.max=22\n"
-                + "#time.torch.min=4\n"
-                + "#time.torch.max=13\n"
-                + "#time.lantern.min=7\n"
-                + "#time.lantern.max=18\n"
-                + "\n# Durability of 'flint and X' items:\n"
-                + "item.durability.flint=48\n"
-                + "item.durability.gold=32\n"
-                + "item.durability.diamond=512\n";
+                + "# See: https://github.com/magistermaks/mod-fading/blob/master/HELP.md";
     }
 
     private final SimpleConfig CONFIG = SimpleConfig.of( "fading" ).provider( this::provider ).request();
