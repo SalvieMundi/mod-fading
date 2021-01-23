@@ -22,9 +22,9 @@ import java.util.List;
 
 public class Utils {
 
-    private static final List<Item> fuelArray = createFuelMap();
+    private static final List<Item> fuelArray = createFuelList();
 
-    private static List<Item> createFuelMap() {
+    private static List<Item> createFuelList() {
         List<Item> arr = new ArrayList<>();
         AbstractFurnaceBlockEntity.createFuelTimeMap().forEach( (k, v) -> arr.add(k) );
         return arr;
