@@ -5,6 +5,8 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.FlintAndSteelItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -12,6 +14,7 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.registry.Registry;
@@ -70,6 +73,23 @@ public class Utils {
 
     public static boolean isVanilla( Block block ) {
         return "minecraft".equals( Registry.BLOCK.getId(block).getNamespace() );
+    }
+
+    public static boolean testAndHandle(ItemStack stack, PlayerEntity player, Hand hand, BlockPos pos, World world) {
+
+        if( stack.getItem() instanceof FlintAndSteelItem ) {
+            stack.damage(1, player, (p) -> p.sendToolBreakStatus(hand));
+            world.playSound(null, pos, SoundEvents.ITEM_FLINTANDSTEEL_USE, SoundCategory.BLOCKS, 1.0F, world.random.nextFloat() * 0.4F + 0.8F);
+            return true;
+        }
+
+        if( stack.getItem() == Items.FIRE_CHARGE ) {
+            stack.decrement(1);
+            world.playSound(null, pos, SoundEvents.ITEM_FIRECHARGE_USE, SoundCategory.BLOCKS, 1.0F, world.random.nextFloat() * 0.4F + 0.8F);
+            return true;
+        }
+
+        return false;
     }
 
 }

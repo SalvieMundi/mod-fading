@@ -8,9 +8,9 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.CampfireBlock;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluids;
+import net.minecraft.item.FlintAndSteelItem;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.stat.Stats;
 import net.minecraft.state.StateManager;
@@ -79,7 +79,7 @@ public abstract class CampfireBlockMixin extends Block {
             }
 
         }else{
-            if( player.getStackInHand(hand).getItem() == Items.FLINT_AND_STEEL ) {
+            if( player.getStackInHand(hand).getItem() instanceof FlintAndSteelItem ) {
                 schedule(world, pos);
             }
         }

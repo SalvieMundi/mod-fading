@@ -1,6 +1,7 @@
 package net.darktree.fading.block;
 
 import net.darktree.fading.Fading;
+import net.darktree.fading.util.Utils;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.Block;
@@ -39,9 +40,8 @@ public class ExtinguishedLanternBlock extends LanternBlock {
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         ItemStack itemStack = player.getStackInHand(hand);
-        if( itemStack.getItem() instanceof FlintAndSteelItem ) {
-            itemStack.damage(1, player, (p) -> p.sendToolBreakStatus( hand ));
-            world.playSound(null, pos, SoundEvents.ITEM_FLINTANDSTEEL_USE, SoundCategory.BLOCKS, 1.0F, world.random.nextFloat() * 0.4F + 0.8F);
+
+        if( Utils.testAndHandle(itemStack, player, hand, pos, world) ) {
             world.setBlockState( pos, getLitState( state.getBlock() ).with( Properties.HANGING, state.get(Properties.HANGING) ) );
             return ActionResult.SUCCESS;
         }
