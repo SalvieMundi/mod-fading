@@ -19,11 +19,18 @@ Values `*.max` indicates maximum time in minutes
 _Integer values_  
 `item.durability.flint`  
 `item.durability.gold`  
-`item.durability.diamond`  
+`item.durability.diamond`   
+
+**Rain**  
+_Integer values_  
+Bigger values make the events more rare  
+`rain.campfire`*  
+`rain.torch`  
+`rain.lantern`  
 
 **Other**  
 _Boolean value_  
 If set to `true` makes torches disappear on burnout  
 `other.disintegrate`
 
-_*Campfire time is per-layer (campfires have 3 layers)_
+_*Campfire time is per-layer (campfires has 3 layers)_

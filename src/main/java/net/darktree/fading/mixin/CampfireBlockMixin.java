@@ -8,9 +8,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.CampfireBlock;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluids;
-import net.minecraft.item.FlintAndSteelItem;
-import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.stat.Stats;
 import net.minecraft.state.StateManager;
@@ -38,6 +36,8 @@ public abstract class CampfireBlockMixin extends Block {
 
     @Shadow
     protected abstract boolean doesBlockCauseSignalFire(BlockState state);
+
+    @Shadow public abstract void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random);
 
     private static final IntProperty SIZE = IntProperty.of("size", 0, 3);
 
@@ -79,7 +79,9 @@ public abstract class CampfireBlockMixin extends Block {
             }
 
         }else{
-            if( player.getStackInHand(hand).getItem() instanceof FlintAndSteelItem ) {
+            Item item = player.getStackInHand(hand).getItem();
+
+            if( item instanceof FlintAndSteelItem || item == Items.FIRE_CHARGE ) {
                 schedule(world, pos);
             }
         }
@@ -96,6 +98,18 @@ public abstract class CampfireBlockMixin extends Block {
     public void getPlacementState(ItemPlacementContext ctx, CallbackInfoReturnable<BlockState> cir) {
         if( ctx.getWorld().getFluidState(ctx.getBlockPos()).getFluid() != Fluids.WATER ) {
             cir.setReturnValue( getDefaultState().with( CampfireBlock.FACING, ctx.getPlayerFacing() ).with( CampfireBlock.SIGNAL_FIRE, doesBlockCauseSignalFire(ctx.getWorld().getBlockState( ctx.getBlockPos().down() ))) );
+        }
+    }
+
+    @Override
+    public boolean hasRandomTicks(BlockState state) {
+        return true;
+    }
+
+    @Override
+    public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+        if( world.hasRain(pos) && world.random.nextInt(Fading.SETTINGS.rain_campfire_rarity) == 0 ) {
+            scheduledTick(state, world, pos, random);
         }
     }
 
@@ -119,7 +133,7 @@ public abstract class CampfireBlockMixin extends Block {
     }
 
     private void schedule( World world, BlockPos pos ) {
-        world.getBlockTickScheduler().schedule(pos, (CampfireBlock) (Object) this, Fading.SETTINGS.campfireTime.getTicks(world.random));
+        world.getBlockTickScheduler().schedule(pos, (CampfireBlock) (Object) this, Utils.getCampfireTime(world));
     }
 
 }

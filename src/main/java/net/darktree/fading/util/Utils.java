@@ -17,6 +17,7 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 
@@ -90,6 +91,18 @@ public class Utils {
         }
 
         return false;
+    }
+
+    public static int getTorchTime(World world) {
+        return Fading.SETTINGS.torchTime.getTicks( world.random );
+    }
+
+    public static int getLanternTime(World world) {
+        return Fading.SETTINGS.lanternTime.getTicks( world.random );
+    }
+
+    public static int getCampfireTime(World world) {
+        return Fading.SETTINGS.campfireTime.getTicks( world.random );
     }
 
 }

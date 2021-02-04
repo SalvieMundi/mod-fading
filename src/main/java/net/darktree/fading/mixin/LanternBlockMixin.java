@@ -35,6 +35,18 @@ public abstract class LanternBlockMixin extends Block {
     }
 
     @Override
+    public boolean hasRandomTicks(BlockState state) {
+        return true;
+    }
+
+    @Override
+    public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+        if( world.hasRain(pos) && world.random.nextInt(Fading.SETTINGS.rain_lantern_rarity) == 0 ) {
+            scheduledTick(state, world, pos, random);
+        }
+    }
+
+    @Override
     public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
         schedule(world, pos);
     }
@@ -56,7 +68,7 @@ public abstract class LanternBlockMixin extends Block {
     }
 
     private void schedule( World world, BlockPos pos ) {
-        world.getBlockTickScheduler().schedule(pos, (LanternBlock) (Object) this, Fading.SETTINGS.lanternTime.getTicks(world.random));
+        world.getBlockTickScheduler().schedule(pos, (LanternBlock) (Object) this, Utils.getLanternTime(world));
     }
 
     public BlockState getUnlitState( Block block ) {

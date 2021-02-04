@@ -4,11 +4,7 @@ import net.darktree.fading.Fading;
 import net.darktree.fading.util.Utils;
 import net.minecraft.block.*;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.FlintAndSteelItem;
-import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
@@ -32,6 +28,18 @@ public abstract class TorchBlockMixin extends Block {
         }
 
         super.neighborUpdate(state, world, pos, block, fromPos, notify);
+    }
+
+    @Override
+    public boolean hasRandomTicks(BlockState state) {
+        return true;
+    }
+
+    @Override
+    public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+        if( world.hasRain(pos) && world.random.nextInt(Fading.SETTINGS.rain_torch_rarity) == 0 ) {
+            scheduledTick(state, world, pos, random);
+        }
     }
 
     @Override
@@ -61,7 +69,7 @@ public abstract class TorchBlockMixin extends Block {
     }
 
     private void schedule( World world, BlockPos pos ) {
-        world.getBlockTickScheduler().schedule(pos, (TorchBlock) (Object) this, Fading.SETTINGS.torchTime.getTicks(world.random));
+        world.getBlockTickScheduler().schedule(pos, (TorchBlock) (Object) this, Utils.getTorchTime(world));
     }
 
     public BlockState getUnlitState( Block block ) {
