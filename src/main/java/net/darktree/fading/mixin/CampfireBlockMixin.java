@@ -34,8 +34,7 @@ public abstract class CampfireBlockMixin extends Block {
         super(settings);
     }
 
-    @Shadow
-    protected abstract boolean doesBlockCauseSignalFire(BlockState state);
+    @Shadow protected abstract boolean doesBlockCauseSignalFire(BlockState state);
 
     @Shadow public abstract void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random);
 
@@ -53,36 +52,38 @@ public abstract class CampfireBlockMixin extends Block {
 
     @Inject(at=@At("HEAD"), method="onUse(Lnet/minecraft/block/BlockState;Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/util/Hand;Lnet/minecraft/util/hit/BlockHitResult;)Lnet/minecraft/util/ActionResult;", cancellable = true)
     public void onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit, CallbackInfoReturnable<ActionResult> cir) {
-        if ( state.get(CampfireBlock.LIT) ) {
-            ItemStack itemStack = player.getStackInHand(hand);
+        if( canFade() ) {
+            if (state.get(CampfireBlock.LIT)) {
+                ItemStack itemStack = player.getStackInHand(hand);
 
-            if( !world.isClient && Utils.isFuel( itemStack ) ) {
-                int s = state.get(SIZE);
-                if (s != 3) {
-                    world.setBlockState(pos, state.with(SIZE, s + 1));
+                if (!world.isClient && Utils.isFuel(itemStack)) {
+                    int s = state.get(SIZE);
+                    if (s != 3) {
+                        world.setBlockState(pos, state.with(SIZE, s + 1));
 
-                    if (!player.abilities.creativeMode) {
-                        itemStack.decrement(1);
+                        if (!player.abilities.creativeMode) {
+                            itemStack.decrement(1);
+                        }
+
+                        player.incrementStat(Stats.INTERACT_WITH_CAMPFIRE);
+                        cir.setReturnValue(ActionResult.SUCCESS);
                     }
-
-                    player.incrementStat(Stats.INTERACT_WITH_CAMPFIRE);
-                    cir.setReturnValue(ActionResult.SUCCESS);
                 }
-            }
 
-            if( !world.isClient ) {
-                ItemStack ignited = Utils.igniteItemStack( itemStack );
-                if( !ignited.isEmpty() ) {
-                    player.setStackInHand( hand, ignited );
-                    Utils.playItemIgniteSound( pos, world );
+                if (!world.isClient) {
+                    ItemStack ignited = Utils.igniteItemStack(itemStack);
+                    if (!ignited.isEmpty()) {
+                        player.setStackInHand(hand, ignited);
+                        Utils.playItemIgniteSound(pos, world);
+                    }
                 }
-            }
 
-        }else{
-            Item item = player.getStackInHand(hand).getItem();
+            } else {
+                Item item = player.getStackInHand(hand).getItem();
 
-            if( item instanceof FlintAndSteelItem || item == Items.FIRE_CHARGE ) {
-                schedule(world, pos);
+                if (item instanceof FlintAndSteelItem || item == Items.FIRE_CHARGE) {
+                    schedule(world, pos);
+                }
             }
         }
     }
@@ -90,7 +91,9 @@ public abstract class CampfireBlockMixin extends Block {
     @Inject(at=@At("HEAD"), method="spawnSmokeParticle(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;ZZ)V", cancellable = true)
     private static void spawnSmokeParticle(World world, BlockPos pos, boolean isSignal, boolean lotsOfSmoke, CallbackInfo ci) {
         if( world.random.nextInt(1 + (int) Math.pow( 2, world.getBlockState(pos).get(SIZE) ) ) == 0 ) {
-            ci.cancel();
+            if( Utils.isExtinguishable( world.getBlockState(pos).getBlock() ) ) {
+                ci.cancel();
+            }
         }
     }
 
@@ -103,24 +106,26 @@ public abstract class CampfireBlockMixin extends Block {
 
     @Override
     public boolean hasRandomTicks(BlockState state) {
-        return true;
+        return canFade() || randomTicks;
     }
 
     @Override
     public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-        if( world.hasRain(pos) && world.random.nextInt(Fading.SETTINGS.rain_campfire_rarity) == 0 ) {
+        if( world.hasRain(pos) && world.random.nextInt(Fading.SETTINGS.rain_campfire_rarity) == 0 && canFade() ) {
             scheduledTick(state, world, pos, random);
         }
     }
 
     @Override
     public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
-        schedule(world, pos);
+        if( canFade() ) {
+            schedule(world, pos);
+        }
     }
 
     @Override
     public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-        if( state.get(CampfireBlock.LIT) ) {
+        if( state.get(CampfireBlock.LIT) && canFade() ) {
             int s = state.get(SIZE);
             if( s == 0 ) {
                 world.setBlockState( pos, state.with(CampfireBlock.LIT, false) );
@@ -134,6 +139,10 @@ public abstract class CampfireBlockMixin extends Block {
 
     private void schedule( World world, BlockPos pos ) {
         world.getBlockTickScheduler().schedule(pos, (CampfireBlock) (Object) this, Utils.getCampfireTime(world));
+    }
+
+    public boolean canFade() {
+        return Utils.isExtinguishable(this);
     }
 
 }

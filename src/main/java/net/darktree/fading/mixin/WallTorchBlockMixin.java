@@ -19,21 +19,13 @@ public abstract class WallTorchBlockMixin extends TorchBlock {
 
     @Override
     public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-        if( Utils.isVanilla(this) ) {
-
-            BlockState target = Fading.SETTINGS.disintegrate
-                    ? Blocks.AIR.getDefaultState()
-                    : getWallUnlitState( this ).with(HorizontalFacingBlock.FACING, state.get(HorizontalFacingBlock.FACING));
-
-            world.setBlockState( pos, target );
+        if( Utils.isExtinguishable(this) ) {
+            Utils.setUnlitBlock(world, pos, Fading.EXTINGUISHED_WALL_TORCH.getDefaultState()
+                    .with(HorizontalFacingBlock.FACING, state.get(HorizontalFacingBlock.FACING))
+            );
             Utils.playExtinguishSound( pos, world );
             Utils.playWallTorchSmokeEffect( pos, world );
         }
-    }
-
-    public BlockState getWallUnlitState( Block block ) {
-        if( block == Blocks.WALL_TORCH ) return Fading.EXTINGUISHED_WALL_TORCH.getDefaultState();
-        return Fading.EXTINGUISHED_WALL_SOUL_TORCH.getDefaultState();
     }
 
 }

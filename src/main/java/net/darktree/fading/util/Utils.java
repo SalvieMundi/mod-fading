@@ -74,6 +74,7 @@ public class Utils {
         world.spawnParticles(ParticleTypes.SMOKE, d, e, f, 2, 0, 0, 0, 0);
     }
 
+    @Deprecated
     public static boolean isVanilla( Block block ) {
         return "minecraft".equals( Registry.BLOCK.getId(block).getNamespace() );
     }
@@ -105,6 +106,18 @@ public class Utils {
 
     public static int getCampfireTime(World world) {
         return Fading.SETTINGS.campfireTime.getTicks( world.random );
+    }
+
+    public static boolean isExtinguishable( Block block ) {
+        return block.isIn(Fading.EXTINGUISHABLE);
+    }
+
+    public static void setUnlitBlock( World world, BlockPos pos, BlockState state ) {
+        if( !Fading.SETTINGS.disintegrate ) {
+            world.setBlockState(pos, state);
+        }else{
+            world.setBlockState(pos, Blocks.AIR.getDefaultState());
+        }
     }
 
 }

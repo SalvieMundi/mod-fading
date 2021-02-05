@@ -22,37 +22,26 @@ public abstract class TorchBlockMixin extends Block {
     }
 
     @Override
-    public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean notify) {
-        if( world.getBlockTickScheduler().isScheduled(pos, (TorchBlock) (Object) this) ) {
-            schedule( world, pos );
-        }
-
-        super.neighborUpdate(state, world, pos, block, fromPos, notify);
-    }
-
-    @Override
     public boolean hasRandomTicks(BlockState state) {
-        return true;
+        return canFade() || randomTicks;
     }
 
     @Override
     public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-        if( world.hasRain(pos) && world.random.nextInt(Fading.SETTINGS.rain_torch_rarity) == 0 ) {
+        if( world.hasRain(pos) && world.random.nextInt(Fading.SETTINGS.rain_torch_rarity) == 0 && canFade() ) {
             scheduledTick(state, world, pos, random);
         }
     }
 
     @Override
     public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
-        if( Utils.isVanilla(this) ) {
-            schedule(world, pos);
-        }
+        scheduleIfApplicable(world, pos);
     }
 
     @Override
     public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-        if( Utils.isVanilla(this) ) {
-            world.setBlockState(pos, getUnlitState(this));
+        if( canFade() ) {
+            Utils.setUnlitBlock(world, pos, Fading.EXTINGUISHED_TORCH.getDefaultState());
             Utils.playExtinguishSound(pos, world);
             Utils.playTorchSmokeEffect(pos, world);
         }
@@ -60,7 +49,7 @@ public abstract class TorchBlockMixin extends Block {
 
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        if( !world.isClient && player.getStackInHand(hand).isEmpty() && player.isSneaking() ) {
+        if( !world.isClient && player.getStackInHand(hand).isEmpty() && player.isSneaking() && canFade() ) {
             scheduledTick( state, (ServerWorld) world, pos, world.random );
             return ActionResult.SUCCESS;
         }
@@ -68,17 +57,14 @@ public abstract class TorchBlockMixin extends Block {
         return super.onUse(state, world, pos, player, hand, hit);
     }
 
-    private void schedule( World world, BlockPos pos ) {
-        world.getBlockTickScheduler().schedule(pos, (TorchBlock) (Object) this, Utils.getTorchTime(world));
+    private void scheduleIfApplicable( World world, BlockPos pos ) {
+        if( canFade() ) {
+            world.getBlockTickScheduler().schedule(pos, (TorchBlock) (Object) this, Utils.getTorchTime(world));
+        }
     }
 
-    public BlockState getUnlitState( Block block ) {
-        if( !Fading.SETTINGS.disintegrate ) {
-            if (block == Blocks.TORCH) return Fading.EXTINGUISHED_TORCH.getDefaultState();
-            return Fading.EXTINGUISHED_SOUL_TORCH.getDefaultState();
-        }
-
-        return Blocks.AIR.getDefaultState();
+    public boolean canFade() {
+        return Utils.isExtinguishable(this);
     }
 
 }

@@ -36,6 +36,12 @@ public class Fading implements ModInitializer, ClientModInitializer {
     public static final Item EXTINGUISHED_SOUL_TORCH_ITEM = new WallStandingBlockItem(EXTINGUISHED_SOUL_TORCH, EXTINGUISHED_WALL_SOUL_TORCH, new Item.Settings().group(ItemGroup.DECORATIONS) );
     public static final Item EXTINGUISHED_SOUL_LANTERN_ITEM = new BlockItem(EXTINGUISHED_SOUL_LANTERN, new Item.Settings().group(ItemGroup.DECORATIONS) );
 
+    // tags
+    public static Tag<Block> EXTINGUISHABLE_CAMPFIRES;
+    public static Tag<Block> EXTINGUISHABLE_LANTERNS;
+    public static Tag<Block> EXTINGUISHABLE_TORCHES;
+    public static Tag<Block> EXTINGUISHABLE;
+
     @Override
     public void onInitialize() {
         Registry.register( Registry.BLOCK, new Identifier("extinguished_wall_torch"), EXTINGUISHED_WALL_TORCH);
@@ -49,10 +55,17 @@ public class Fading implements ModInitializer, ClientModInitializer {
         Registry.register( Registry.BLOCK, new Identifier("extinguished_soul_lantern"), EXTINGUISHED_SOUL_LANTERN);
         Registry.register( Registry.ITEM, new Identifier("extinguished_soul_lantern"), EXTINGUISHED_SOUL_LANTERN_ITEM);
 
-        // Flints
+        // flints
         Registry.register( Registry.ITEM, new Identifier("fading", "flint_and_flint"), new FlintAndSteelItem( new Item.Settings().maxDamage( SETTINGS.durability_flint ).group(ItemGroup.TOOLS) ) );
         Registry.register( Registry.ITEM, new Identifier("fading", "flint_and_gold"), new FlintAndSteelItem( new Item.Settings().maxDamage( SETTINGS.durability_gold ).group(ItemGroup.TOOLS) ) );
         Registry.register( Registry.ITEM, new Identifier("fading", "flint_and_diamond"), new FlintAndSteelItem( new Item.Settings().maxDamage( SETTINGS.durability_diamond ).group(ItemGroup.TOOLS) ) );
+
+        // tags
+        EXTINGUISHABLE_CAMPFIRES = TagRegistry.block( new Identifier("fading", "extinguishable_campfires") );
+        EXTINGUISHABLE_LANTERNS = TagRegistry.block( new Identifier("fading", "extinguishable_lanterns") );
+        EXTINGUISHABLE_TORCHES = TagRegistry.block( new Identifier("fading", "extinguishable_torches") );
+        EXTINGUISHABLE = TagRegistry.block( new Identifier("fading", "extinguishable") );
+
     }
 
     @Override
