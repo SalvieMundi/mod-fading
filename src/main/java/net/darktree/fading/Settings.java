@@ -20,17 +20,17 @@ public class Settings {
     }
 
     public final MinuteRange campfireTime = new MinuteRange(
-            CONFIG.getOrDefault("time.campfire.min", 8),
-            CONFIG.getOrDefault("time.campfire.max", 28)
+            CONFIG.getOrDefault("time.campfire.min", 10),
+            CONFIG.getOrDefault("time.campfire.max", 30)
     );
 
     public final MinuteRange torchTime = new MinuteRange(
             CONFIG.getOrDefault("time.torch.min", 8),
-            CONFIG.getOrDefault("time.torch.max", 15)
+            CONFIG.getOrDefault("time.torch.max", 20)
     );
 
     public final MinuteRange lanternTime = new MinuteRange(
-            CONFIG.getOrDefault("time.lantern.min", 10),
+            CONFIG.getOrDefault("time.lantern.min", 12),
             CONFIG.getOrDefault("time.lantern.max", 28)
     );
 
