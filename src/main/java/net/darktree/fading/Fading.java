@@ -3,6 +3,7 @@ package net.darktree.fading;
 import net.darktree.fading.block.ExtinguishedLanternBlock;
 import net.darktree.fading.block.ExtinguishedTorchBlock;
 import net.darktree.fading.block.ExtinguishedWallTorchBlock;
+import net.darktree.fading.recipes.Recipes;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
@@ -38,17 +39,22 @@ public class Fading implements ModInitializer, ClientModInitializer {
     public static final Item EXTINGUISHED_SOUL_TORCH_ITEM = new WallStandingBlockItem(EXTINGUISHED_SOUL_TORCH, EXTINGUISHED_WALL_SOUL_TORCH, new Item.Settings().group(ItemGroup.DECORATIONS) );
     public static final Item EXTINGUISHED_SOUL_LANTERN_ITEM = new BlockItem(EXTINGUISHED_SOUL_LANTERN, new Item.Settings().group(ItemGroup.DECORATIONS) );
 
-    // tags
+    // Tags
     public static Tag<Block> EXTINGUISHABLE_CAMPFIRES;
     public static Tag<Block> EXTINGUISHABLE_LANTERNS;
     public static Tag<Block> EXTINGUISHABLE_TORCHES;
     public static Tag<Block> EXTINGUISHABLE;
 
-    // stats
+    // Stats
     public static final Identifier EXTINGUISH_TORCH = new Identifier(NAMESPACE, "extinguish_torch");
     public static final Identifier EXTINGUISH_LANTERN = new Identifier(NAMESPACE, "extinguish_lantern");
     public static final Identifier IGNITE_TORCH = new Identifier(NAMESPACE, "ignite_torch");
     public static final Identifier IGNITE_LANTERN = new Identifier(NAMESPACE, "ignite_lantern");
+
+    // Flints
+    public static Item FLINT_AND_FLINT = null;
+    public static Item FLINT_AND_GOLD = null;
+    public static Item FLINT_AND_DIAMOND = null;
 
     @Override
     public void onInitialize() {
@@ -64,9 +70,17 @@ public class Fading implements ModInitializer, ClientModInitializer {
         Registry.register( Registry.ITEM, new Identifier("extinguished_soul_lantern"), EXTINGUISHED_SOUL_LANTERN_ITEM);
 
         // flints
-        Registry.register( Registry.ITEM, new Identifier(NAMESPACE, "flint_and_flint"), new FlintAndSteelItem( new Item.Settings().maxDamage( SETTINGS.durability_flint ).group(ItemGroup.TOOLS) ) );
-        Registry.register( Registry.ITEM, new Identifier(NAMESPACE, "flint_and_gold"), new FlintAndSteelItem( new Item.Settings().maxDamage( SETTINGS.durability_gold ).group(ItemGroup.TOOLS) ) );
-        Registry.register( Registry.ITEM, new Identifier(NAMESPACE, "flint_and_diamond"), new FlintAndSteelItem( new Item.Settings().maxDamage( SETTINGS.durability_diamond ).group(ItemGroup.TOOLS) ) );
+        if( SETTINGS.flints ) {
+            FLINT_AND_FLINT = new FlintAndSteelItem(new Item.Settings().maxDamage(SETTINGS.durability_flint).group(ItemGroup.TOOLS));
+            FLINT_AND_GOLD = new FlintAndSteelItem(new Item.Settings().maxDamage(SETTINGS.durability_gold).group(ItemGroup.TOOLS));
+            FLINT_AND_DIAMOND = new FlintAndSteelItem(new Item.Settings().maxDamage(SETTINGS.durability_diamond).group(ItemGroup.TOOLS));
+            Registry.register(Registry.ITEM, new Identifier(NAMESPACE, "flint_and_flint"), FLINT_AND_FLINT);
+            Registry.register(Registry.ITEM, new Identifier(NAMESPACE, "flint_and_gold"), FLINT_AND_GOLD);
+            Registry.register(Registry.ITEM, new Identifier(NAMESPACE, "flint_and_diamond"), FLINT_AND_DIAMOND);
+
+            // dynamically create recipes
+            Recipes.init();
+        }
 
         // tags
         EXTINGUISHABLE_CAMPFIRES = TagRegistry.block( new Identifier(NAMESPACE, "extinguishable_campfires") );

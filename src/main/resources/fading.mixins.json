@@ -6,11 +6,11 @@
   "mixins": [
     "CampfireBlockMixin",
     "LanternBlockMixin",
+    "RecipeManagerMixin",
     "TorchBlockMixin",
     "WallTorchBlockMixin"
   ],
-  "client": [
-  ],
+  "client": [],
   "injectors": {
     "defaultRequire": 1
   }

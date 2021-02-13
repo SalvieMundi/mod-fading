@@ -31,6 +31,8 @@ Bigger values make the events more rare
 **Other**  
 _Boolean value_  
 If set to `true` makes torches disappear on burnout  
-`other.disintegrate`
+`other.disintegrate`  
+If set to `false` custom flint and steels won't be add    
+`other.flints`
 
 _*Campfire time is per-layer (campfires has 3 layers)_

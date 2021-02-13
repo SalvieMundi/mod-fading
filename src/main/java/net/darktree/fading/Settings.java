@@ -35,6 +35,7 @@ public class Settings {
     );
 
     public final boolean disintegrate = CONFIG.getOrDefault("other.disintegrate", false);
+    public final boolean flints = CONFIG.getOrDefault("other.flints", true);
     public final int durability_flint = CONFIG.getOrDefault("item.durability.flint", 48);
     public final int durability_gold = CONFIG.getOrDefault("item.durability.gold", 32);
     public final int durability_diamond = CONFIG.getOrDefault("item.durability.diamond", 512);
