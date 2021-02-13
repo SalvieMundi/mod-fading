@@ -5,6 +5,10 @@
     "block.minecraft.extinguished_soul_lantern": "Unlit Soul Lantern",
     "item.fading.flint_and_flint": "Flint and Flint",
     "item.fading.flint_and_gold": "Flint and Gold",
-    "item.fading.flint_and_diamond": "Flint and Diamond"
+    "item.fading.flint_and_diamond": "Flint and Diamond",
+    "stat.fading.extinguish_torch": "Torches extinguished",
+    "stat.fading.extinguish_lantern": "Lanterns extinguished",
+    "stat.fading.ignite_torch": "Torches ignited",
+    "stat.fading.ignite_lantern": "Lanterns ignited"
 }
 

@@ -44,6 +44,7 @@ public class ExtinguishedLanternBlock extends LanternBlock {
 
         if( Utils.testAndHandle(itemStack, player, hand, pos, world) ) {
             world.setBlockState( pos, getLitState( state.getBlock() ).with( Properties.HANGING, state.get(Properties.HANGING) ) );
+            player.incrementStat(Fading.IGNITE_LANTERN);
             return ActionResult.SUCCESS;
         }
 

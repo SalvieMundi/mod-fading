@@ -54,6 +54,7 @@ public abstract class LanternBlockMixin extends Block {
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         if( !world.isClient && player.getStackInHand(hand).isEmpty() && player.isSneaking() && canFade() ) {
             scheduledTick( state, (ServerWorld) world, pos, world.random );
+            player.incrementStat(Fading.EXTINGUISH_LANTERN);
             return ActionResult.SUCCESS;
         }
 

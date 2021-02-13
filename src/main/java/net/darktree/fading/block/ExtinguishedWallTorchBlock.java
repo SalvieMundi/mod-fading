@@ -44,6 +44,7 @@ public class ExtinguishedWallTorchBlock extends WallTorchBlock {
 
         if( Utils.testAndHandle(itemStack, player, hand, pos, world) ) {
             world.setBlockState( pos, getLitState( state.getBlock() ).with(FACING, state.get(FACING)) );
+            player.incrementStat(Fading.IGNITE_TORCH);
             return ActionResult.SUCCESS;
         }
 

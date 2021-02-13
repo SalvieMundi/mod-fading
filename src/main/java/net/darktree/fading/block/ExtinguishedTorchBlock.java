@@ -44,6 +44,7 @@ public class ExtinguishedTorchBlock extends TorchBlock {
 
         if( Utils.testAndHandle(itemStack, player, hand, pos, world) ) {
             world.setBlockState( pos, getLitState( state.getBlock() ) );
+            player.incrementStat(Fading.IGNITE_TORCH);
             return ActionResult.SUCCESS;
         }
 

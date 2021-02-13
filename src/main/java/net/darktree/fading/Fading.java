@@ -9,11 +9,12 @@ import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.tag.TagRegistry;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.Material;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.item.*;
 import net.minecraft.sound.BlockSoundGroup;
+import net.minecraft.stat.StatFormatter;
+import net.minecraft.stat.Stats;
 import net.minecraft.tag.Tag;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
@@ -21,6 +22,7 @@ import net.minecraft.util.registry.Registry;
 public class Fading implements ModInitializer, ClientModInitializer {
 
     public static Settings SETTINGS = new Settings();
+    public static String NAMESPACE = "fading";
 
     // Blocks
     public static final Block EXTINGUISHED_WALL_TORCH = new ExtinguishedWallTorchBlock( AbstractBlock.Settings.of(Material.SUPPORTED).noCollision().breakInstantly().sounds(BlockSoundGroup.WOOD) );
@@ -42,6 +44,12 @@ public class Fading implements ModInitializer, ClientModInitializer {
     public static Tag<Block> EXTINGUISHABLE_TORCHES;
     public static Tag<Block> EXTINGUISHABLE;
 
+    // stats
+    public static final Identifier EXTINGUISH_TORCH = new Identifier(NAMESPACE, "extinguish_torch");
+    public static final Identifier EXTINGUISH_LANTERN = new Identifier(NAMESPACE, "extinguish_lantern");
+    public static final Identifier IGNITE_TORCH = new Identifier(NAMESPACE, "ignite_torch");
+    public static final Identifier IGNITE_LANTERN = new Identifier(NAMESPACE, "ignite_lantern");
+
     @Override
     public void onInitialize() {
         Registry.register( Registry.BLOCK, new Identifier("extinguished_wall_torch"), EXTINGUISHED_WALL_TORCH);
@@ -56,16 +64,21 @@ public class Fading implements ModInitializer, ClientModInitializer {
         Registry.register( Registry.ITEM, new Identifier("extinguished_soul_lantern"), EXTINGUISHED_SOUL_LANTERN_ITEM);
 
         // flints
-        Registry.register( Registry.ITEM, new Identifier("fading", "flint_and_flint"), new FlintAndSteelItem( new Item.Settings().maxDamage( SETTINGS.durability_flint ).group(ItemGroup.TOOLS) ) );
-        Registry.register( Registry.ITEM, new Identifier("fading", "flint_and_gold"), new FlintAndSteelItem( new Item.Settings().maxDamage( SETTINGS.durability_gold ).group(ItemGroup.TOOLS) ) );
-        Registry.register( Registry.ITEM, new Identifier("fading", "flint_and_diamond"), new FlintAndSteelItem( new Item.Settings().maxDamage( SETTINGS.durability_diamond ).group(ItemGroup.TOOLS) ) );
+        Registry.register( Registry.ITEM, new Identifier(NAMESPACE, "flint_and_flint"), new FlintAndSteelItem( new Item.Settings().maxDamage( SETTINGS.durability_flint ).group(ItemGroup.TOOLS) ) );
+        Registry.register( Registry.ITEM, new Identifier(NAMESPACE, "flint_and_gold"), new FlintAndSteelItem( new Item.Settings().maxDamage( SETTINGS.durability_gold ).group(ItemGroup.TOOLS) ) );
+        Registry.register( Registry.ITEM, new Identifier(NAMESPACE, "flint_and_diamond"), new FlintAndSteelItem( new Item.Settings().maxDamage( SETTINGS.durability_diamond ).group(ItemGroup.TOOLS) ) );
 
         // tags
-        EXTINGUISHABLE_CAMPFIRES = TagRegistry.block( new Identifier("fading", "extinguishable_campfires") );
-        EXTINGUISHABLE_LANTERNS = TagRegistry.block( new Identifier("fading", "extinguishable_lanterns") );
-        EXTINGUISHABLE_TORCHES = TagRegistry.block( new Identifier("fading", "extinguishable_torches") );
-        EXTINGUISHABLE = TagRegistry.block( new Identifier("fading", "extinguishable") );
+        EXTINGUISHABLE_CAMPFIRES = TagRegistry.block( new Identifier(NAMESPACE, "extinguishable_campfires") );
+        EXTINGUISHABLE_LANTERNS = TagRegistry.block( new Identifier(NAMESPACE, "extinguishable_lanterns") );
+        EXTINGUISHABLE_TORCHES = TagRegistry.block( new Identifier(NAMESPACE, "extinguishable_torches") );
+        EXTINGUISHABLE = TagRegistry.block( new Identifier(NAMESPACE, "extinguishable") );
 
+        // stats
+        registerStat(EXTINGUISH_TORCH);
+        registerStat(EXTINGUISH_LANTERN);
+        registerStat(IGNITE_TORCH);
+        registerStat(IGNITE_LANTERN);
     }
 
     @Override
@@ -78,6 +91,11 @@ public class Fading implements ModInitializer, ClientModInitializer {
                 EXTINGUISHED_SOUL_TORCH,
                 EXTINGUISHED_SOUL_LANTERN
         );
+    }
+
+    private static void registerStat( Identifier id ) {
+        Registry.register(Registry.CUSTOM_STAT, id, id);
+        Stats.CUSTOM.getOrCreateStat(id, StatFormatter.DEFAULT);
     }
 
 }
