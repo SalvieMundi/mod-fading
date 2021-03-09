@@ -36,8 +36,6 @@ public abstract class CampfireBlockMixin extends Block {
 
     @Shadow protected abstract boolean doesBlockCauseSignalFire(BlockState state);
 
-    @Shadow public abstract void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random);
-
     private static final IntProperty SIZE = IntProperty.of("size", 0, 3);
 
     @Inject(at=@At("TAIL"), method="<init>(ZILnet/minecraft/block/AbstractBlock$Settings;)V")
