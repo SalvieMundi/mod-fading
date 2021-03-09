@@ -9,7 +9,9 @@
   ],
   "contact": {
     "website": "http://darktree.net",
-    "homepage": "http://darktree.net"
+    "homepage": "http://darktree.net",
+    "issues": "https://github.com/magistermaks/mod-fading/issues",
+    "sources": "https://github.com/magistermaks/mod-fading"
   },
   "license": "MIT",
   "icon": "assets/fading/icon.png",
