@@ -2,12 +2,13 @@
 
 ## Config
 
-For default values see: [settings](https://github.com/magistermaks/mod-fading/blob/master/src/main/java/net/darktree/fading/Settings.java)
+For default values see: [settings](https://github.com/magistermaks/mod-fading/blob/master/src/main/java/net/darktree/fading/Settings.java)  
+Config location: `./config/fading.properties`
 
 **Burnout Times**  
 _Integer values_  
-Values `*.min` indicate minimum time in minutes  
-Values `*.max` indicates maximum time in minutes  
+Values `*.min` indicate minimum time in *minutes*  
+Values `*.max` indicates maximum time in *minutes*  
 `time.campfire.min`*  
 `time.campfire.max`*  
 `time.torch.min`  
@@ -21,7 +22,7 @@ _Integer values_
 `item.durability.gold`  
 `item.durability.diamond`   
 
-**Rain**  
+**Rain Effect**  
 _Integer values_  
 Bigger values make the events more rare  
 `rain.campfire`*  
@@ -35,4 +36,4 @@ If set to `true` makes torches disappear on burnout
 If set to `false` custom flint and steels won't be add    
 `other.flints`
 
-_*Campfire time is per-layer (campfires has 3 layers)_
+_*Campfire time is per-layer (campfire have 3 layers)_
