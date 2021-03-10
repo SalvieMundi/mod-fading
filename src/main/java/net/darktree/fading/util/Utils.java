@@ -113,7 +113,7 @@ public class Utils {
     }
 
     public static void setUnlitBlock( World world, BlockPos pos, BlockState state ) {
-        if( !Fading.SETTINGS.disintegrate ) {
+        if( !Fading.SETTINGS.disintegrate || world.hasRain(pos) ) {
             world.setBlockState(pos, state);
         }else{
             world.setBlockState(pos, Blocks.AIR.getDefaultState());
