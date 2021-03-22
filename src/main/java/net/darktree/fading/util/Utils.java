@@ -55,14 +55,12 @@ public class Utils {
         world.playSound( null, pos, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 0.04F, 2.0F );
     }
 
-    @Environment(EnvType.CLIENT)
     public static void playWallTorchSmokeEffect( BlockPos pos, World world ) {
         BlockState state = world.getBlockState(pos);
         Direction dir = state.get(WallTorchBlock.FACING).getOpposite();
         playSmokeEffect( (ServerWorld) world, pos, 0.27 * dir.getOffsetX(), 0.22, 0.27 * dir.getOffsetZ());
     }
 
-    @Environment(EnvType.CLIENT)
     public static void playTorchSmokeEffect( BlockPos pos, World world ) {
         playSmokeEffect( (ServerWorld) world, pos, 0, 0, 0);
     }
