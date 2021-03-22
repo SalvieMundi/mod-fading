@@ -72,11 +72,6 @@ public class Utils {
         world.spawnParticles(ParticleTypes.SMOKE, d, e, f, 2, 0, 0, 0, 0);
     }
 
-    @Deprecated
-    public static boolean isVanilla( Block block ) {
-        return "minecraft".equals( Registry.BLOCK.getId(block).getNamespace() );
-    }
-
     public static boolean testAndHandle(ItemStack stack, PlayerEntity player, Hand hand, BlockPos pos, World world) {
 
         if( stack.getItem() instanceof FlintAndSteelItem ) {
