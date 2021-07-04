@@ -59,7 +59,7 @@ public abstract class CampfireBlockMixin extends Block {
                     if (s != 3) {
                         world.setBlockState(pos, state.with(SIZE, s + 1));
 
-                        if (!player.abilities.creativeMode) {
+                        if (!player.getAbilities().creativeMode) {
                             itemStack.decrement(1);
                         }
 

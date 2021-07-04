@@ -26,11 +26,11 @@ public class Fading implements ModInitializer, ClientModInitializer {
     public static String NAMESPACE = "fading";
 
     // Blocks
-    public static final Block EXTINGUISHED_WALL_TORCH = new ExtinguishedWallTorchBlock( AbstractBlock.Settings.of(Material.SUPPORTED).noCollision().breakInstantly().sounds(BlockSoundGroup.WOOD) );
-    public static final Block EXTINGUISHED_TORCH = new ExtinguishedTorchBlock( AbstractBlock.Settings.of(Material.SUPPORTED).noCollision().breakInstantly().sounds(BlockSoundGroup.WOOD) );
+    public static final Block EXTINGUISHED_WALL_TORCH = new ExtinguishedWallTorchBlock( AbstractBlock.Settings.of(Material.DECORATION).noCollision().breakInstantly().sounds(BlockSoundGroup.WOOD) );
+    public static final Block EXTINGUISHED_TORCH = new ExtinguishedTorchBlock( AbstractBlock.Settings.of(Material.DECORATION).noCollision().breakInstantly().sounds(BlockSoundGroup.WOOD) );
     public static final Block EXTINGUISHED_LANTERN = new ExtinguishedLanternBlock( AbstractBlock.Settings.of(Material.METAL).requiresTool().strength(3.5F).sounds(BlockSoundGroup.LANTERN).nonOpaque() );
-    public static final Block EXTINGUISHED_WALL_SOUL_TORCH = new ExtinguishedWallTorchBlock( AbstractBlock.Settings.of(Material.SUPPORTED).noCollision().breakInstantly().sounds(BlockSoundGroup.WOOD) );
-    public static final Block EXTINGUISHED_SOUL_TORCH = new ExtinguishedTorchBlock( AbstractBlock.Settings.of(Material.SUPPORTED).noCollision().breakInstantly().sounds(BlockSoundGroup.WOOD) );
+    public static final Block EXTINGUISHED_WALL_SOUL_TORCH = new ExtinguishedWallTorchBlock( AbstractBlock.Settings.of(Material.DECORATION).noCollision().breakInstantly().sounds(BlockSoundGroup.WOOD) );
+    public static final Block EXTINGUISHED_SOUL_TORCH = new ExtinguishedTorchBlock( AbstractBlock.Settings.of(Material.DECORATION).noCollision().breakInstantly().sounds(BlockSoundGroup.WOOD) );
     public static final Block EXTINGUISHED_SOUL_LANTERN = new ExtinguishedLanternBlock( AbstractBlock.Settings.of(Material.METAL).requiresTool().strength(3.5F).sounds(BlockSoundGroup.LANTERN).nonOpaque() );
 
     // Items

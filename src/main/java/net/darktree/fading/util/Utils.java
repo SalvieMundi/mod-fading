@@ -102,7 +102,7 @@ public class Utils {
     }
 
     public static boolean isExtinguishable( Block block ) {
-        return block.isIn(Fading.EXTINGUISHABLE);
+        return Fading.EXTINGUISHABLE.contains(block);
     }
 
     public static void setUnlitBlock( World world, BlockPos pos, BlockState state ) {
