@@ -37,3 +37,14 @@ If set to `false` custom flint and steels won't be add
 `other.flints`
 
 _*Campfire time is per-layer (campfire have 3 layers)_
+
+## Example:
+
+```properties
+time.torch.min=60
+time.torch.max=120
+time.lantern.min=120
+time.lantern.max=180
+other.flints=false
+
+```
