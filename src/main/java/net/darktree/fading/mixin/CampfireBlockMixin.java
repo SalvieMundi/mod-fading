@@ -5,6 +5,7 @@ import net.darktree.fading.util.Utils;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.CampfireBlock;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluids;
@@ -88,7 +89,7 @@ public abstract class CampfireBlockMixin extends Block {
 
     @Inject(at=@At("HEAD"), method="spawnSmokeParticle(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;ZZ)V", cancellable = true)
     private static void spawnSmokeParticle(World world, BlockPos pos, boolean isSignal, boolean lotsOfSmoke, CallbackInfo ci) {
-        if( world.random.nextInt(1 + (int) Math.pow( 2, world.getBlockState(pos).get(SIZE) ) ) == 0 ) {
+        if(world.getBlockState(pos).getBlock() != Blocks.AIR && world.random.nextInt(1 + (int) Math.pow( 2, world.getBlockState(pos).get(SIZE) ) ) == 0 ) {
             if( Utils.isExtinguishable( world.getBlockState(pos).getBlock() ) ) {
                 ci.cancel();
             }
