@@ -55,7 +55,7 @@ public abstract class CampfireBlockMixin extends Block {
             if (state.get(CampfireBlock.LIT)) {
                 ItemStack itemStack = player.getStackInHand(hand);
 
-                if (!world.isClient && Utils.isFuel(itemStack)) {
+                if ( state.getProperties().contains(SIZE) && !world.isClient && Utils.isFuel(itemStack)) {
                     int s = state.get(SIZE);
                     if (s != 3) {
                         world.setBlockState(pos, state.with(SIZE, s + 1));
@@ -89,7 +89,8 @@ public abstract class CampfireBlockMixin extends Block {
 
     @Inject(at=@At("HEAD"), method="spawnSmokeParticle(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;ZZ)V", cancellable = true)
     private static void spawnSmokeParticle(World world, BlockPos pos, boolean isSignal, boolean lotsOfSmoke, CallbackInfo ci) {
-        if(world.getBlockState(pos).getBlock() != Blocks.AIR && world.random.nextInt(1 + (int) Math.pow( 2, world.getBlockState(pos).get(SIZE) ) ) == 0 ) {
+        BlockState state = world.getBlockState(pos);
+    	if( state.getProperties().contains(SIZE) && world.random.nextInt(1 + (int) Math.pow( 2, world.getBlockState(pos).get(SIZE) ) ) == 0 ) {
             if( Utils.isExtinguishable( world.getBlockState(pos).getBlock() ) ) {
                 ci.cancel();
             }
@@ -124,7 +125,7 @@ public abstract class CampfireBlockMixin extends Block {
 
     @Override
     public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-        if( state.get(CampfireBlock.LIT) && canFade() ) {
+        if( state.getProperties().contains(SIZE) && state.get(CampfireBlock.LIT) && canFade() ) {
             int s = state.get(SIZE);
             if( s == 0 ) {
                 world.setBlockState( pos, state.with(CampfireBlock.LIT, false) );
